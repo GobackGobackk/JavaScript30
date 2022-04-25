@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+    /* :root 这个 CSS 伪类匹配文档树的根元素。对于 HTML 来说，:root 表示 <html> 元素，除了优先级更高之外，与 html 选择器相同。 */
+       :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+  </style>
+
+  <script>
+    ;(function(){
+      const inputs = document.querySelectorAll('.controls input')//跟array差別在 出來的東西是node list 有length key foreach 沒有map
+      function changeHandler(){
+        console.log(this.name, this.value)
+
+        // 綁css成立   缺點: 畫面要一個個改
+        // switch(this.name){
+        //   case 'spacing':
+        //     document.querySelector('img').style.padding = this.value + 'px'
+        //     break
+        //   case 'blur':
+        //     document.querySelector('img').style.filter = `blur(${this.value}px)`
+        //     break
+        //   case 'base':
+        //     document.querySelector('img').style.background = this.value
+        //     break
+        // }
+
+
+
+      // document.documentElement.style[`--${this.name}`] = this.value + ( this.name === 'base' ? '' : 'px')
+      // 這句不成立 因為style[]裡不能放變數
+
+
+      //一定要有:root
+      const suffix = this.dataset.sizing || ''
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+
+      }
+
+
+      inputs.forEach((function(input){
+        input.addEventListener('change', changeHandler)//不即時 mouse放開才有值
+        input.addEventListener('mousemove', changeHandler)//即時
+        
+      })
+      )
+    })()//匿名函式 有()直接執行
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    // 方法一 XMLHttpRequest呼叫API方法
+    // function requestHandler(){
+    //   console.log(JSON.parse(this.response))
+    // }
+
+    // let req = new XMLHttpRequest()
+    // req.addEventListener("load", requestHandler)
+    // req.open("get", endpoint)
+    // req.send()
+
+    // 方法二 fetch
+
+    //   .then() 這裡是類似 callback 功能
+    // 第一個 .then() 是在下載完成後將檔案轉檔成物件
+    // 第二個 .then() 是將我們接收到的資料
+    // 一個一個的 push() 到 cities 這個陣列變數裡頭。
+    const cities = [];
+    fetch(endpoint)
+      .then(blob => blob.json())
+      // 針對陣列來說 把東西一個個拆出來 解構的概念
+      .then(data => cities.push(...data));
+
+    function findMatches(wordToMatch, cities) {// cities不會改變
+      return cities.filter(place => {
+        // here we need to figure out if the city or state matches what was searched
+        // gi' 代表的兩個功能
+        // 1. 'g'：整個 data 都查找，而不是只找到第一個之後就停止
+        // 2. 'i'：代表不用區分大小寫
+        const regex = new RegExp(wordToMatch, 'gi');
+        return place.city.match(regex) || place.state.match(regex)
+      });
+    }
+
+    function numberWithCommas(x) {
+
+      // \B:前面要有東西 \d: 阿拉伯數字 x{n, m}: x至少出現n次 最多出現m次
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      // return (x * 1).toLocaleString();
+    }
+
+    function inputHandler() {
+      const matchArray = findMatches(this.value, cities);
+      // console.log(matchArray);  
+      const html = matchArray.map(place => {
+        const regex = new RegExp(this.value, 'gi');
+        const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+        return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `;
+      }).join('');
+      suggestions.innerHTML = html;
+    }
+
+
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+
+    searchInput.addEventListener('change', inputHandler);
+    searchInput.addEventListener('keyup', inputHandler);
+
+
+
+  </script>
+</body>
+
+</html>
