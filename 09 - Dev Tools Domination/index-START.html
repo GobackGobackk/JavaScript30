@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Console Tricks!</title>
 </head>
+
 <body>
 
   <p onClick="makeGreen()">×BREAK×DOWN×</p>
@@ -17,30 +19,112 @@
       p.style.fontSize = '50px';
     }
 
-    // Regular
+    let console = {
+      // 只要把isDev改成false就可以把全部console關掉
+      isDev: true,
+      log(...args) {
+        if (!this.isDev) return;
+        window.console.log(...args);
+      },
+      warn(...args) {
+        window.console.warn(...args);
+      },
+      error(...args) {
+        window.console.error(...args);
+      },
+      info(...args) {
+        window.console.info(...args);
+      },
+      assert(...args) {
+        window.console.assert(...args);
+      },
+      dir(...args) {
+        window.console.dir(...args);
+      },
+      clear(...args) {
+        window.console.clear(...args);
+      },
+      table(...args) {
+        window.console.table(...args);
+      },
+      count(...args) {
+        window.console.count(...args);
+      }
+    };
 
+    // Regular
+    console.log(123, 456);
     // Interpolated
 
-    // Styled
+    // ES6寫法
+    let name = "Alex";
+    console.log(`My name is ${name}`);
 
+
+    console.log("My name is %s", "Alex");
+    console.log("I have %d dollars", 3.45);
+    console.log("I have %f dollars", 3.45);
+    // Styled  %c 對應到css字串
+    console.log("%c住手", "font-size:60px; color:red;");
     // warning!
-
-    // Error :|
-
+    console.warn("警告");
+    // Error
+    console.error("錯誤");
     // Info
-
+    console.info("好像跟log一樣");
     // Testing
+    const errorMsg = 'the # is not even';
+    for (let number = 2; number <= 5; number += 1) {
+      console.log('the # is ' + number);
+      console.assert(number % 2 === 0, { number: number, errorMsg: errorMsg });
+      // or, using ES2015 object property shorthand:
+      // console.assert(number % 2 === 0, {number, errorMsg});
+    }
+      // output:
+      // the # is 2
+      // the # is 3
+      // Assertion failed: {number: 3, errorMsg: "the # is not even"}
+      // the # is 4
+      // the # is 5
+      // Assertion failed: {number: 5, errorMsg: "the # is not even"}
 
+      // 種類
+      console.assert(false, "訊息");
+      console.assert("", "訊息");
+      console.assert(0, "訊息");
+      console.assert(NaN, "訊息");
+      console.assert(null, "訊息");
+      console.assert(undefined, "訊息");
     // clearing
-
+    // 也可在 console 那裏 ctrl + L
+    console.clear();
     // Viewing DOM Elements
-
+    // window.console.dir(console);
+    // 會是 Object 展開後有可以用的東西
+    let p = document.querySelector("p");
+    console.log(p);
+    console.log(dogs);
+    console.dir(p);
+    console.dir(dogs);
     // Grouping together
-
+    console.table(dogs);
+    console.table(dogs, ['name']);
     // counting
-
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
     // timing
 
   </script>
 </body>
+
 </html>
