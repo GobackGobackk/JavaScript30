@@ -1,6 +1,7 @@
 # JavaScript30
+部分示範
 
-## 05 - Flex Panel Gallery demo
+## 05 - Flex Panel Gallery
 ![image](https://github.com/GobackGobackk/JavaScript30/blob/main/gif/Flex_Panels_%F0%9F%92%AA_-_Google_Chrome_2023-01-28_15-07-55_-_Trim_AdobeExpress.gif)
 
 ## 13 - Slide in on Scroll
