@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Hold Shift to Check Multiple Checkboxes</title>
 </head>
+
 <body>
   <style>
-
     html {
       font-family: sans-serif;
       background: #ffc600;
@@ -17,7 +18,7 @@
       margin: 50px auto;
       background: white;
       border-radius: 5px;
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
     }
 
     .item {
@@ -30,7 +31,7 @@
       border-bottom: 0;
     }
 
-    input:checked + p {
+    input:checked+p {
       background: #F9F9F9;
       text-decoration: line-through;
     }
@@ -44,13 +45,13 @@
       padding: 20px;
       transition: background 0.2s;
       flex: 1;
-      font-family:'helvetica neue';
+      font-family: 'helvetica neue';
       font-size: 20px;
       font-weight: 200;
       border-left: 1px solid #D1E2FF;
     }
   </style>
-   <!--
+  <!--
    The following is a common layout you would see in an email client.
 
    When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
@@ -95,7 +96,40 @@
     </div>
   </div>
 
-<script>
-</script>
+  <script>
+    ; (function () {
+      // querySelectorAll 出來不是標準陣列
+      // 若需要 slice index 等陣列功能 需要轉換
+      const checkboxes = Array.from(document.querySelectorAll(
+        '.inbox input[type="checkbox"]'
+      ));
+
+      // 記錄第一個按甚麼
+      let lastCheck = null;
+
+      function clickHandler(e) {
+        // console.log(e);
+        if(this.checked) { // 第一層判斷是否click
+          if(e.shiftKey && lastCheck !== null){ // 第二層判斷是否按shift
+            let nowCheck = checkboxes.indexOf(this);
+            checkboxes.slice(
+              Math.min(nowCheck, lastCheck),
+              Math.max(nowCheck, lastCheck)
+            )
+            .forEach(input => (input.checked = true));
+          }
+          lastCheck = checkboxes.indexOf(this);
+        } else {
+          lastCheck = null;
+        }
+      }
+
+      checkboxes.forEach((input)=>{
+        input.addEventListener('click', clickHandler);
+      });
+
+    })(); 
+  </script>
 </body>
+
 </html>

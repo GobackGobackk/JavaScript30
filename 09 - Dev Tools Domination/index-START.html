@@ -49,6 +49,12 @@
       },
       count(...args) {
         window.console.count(...args);
+      },
+      time(...args) {
+        window.console.time(...args);
+      },
+      timeEnd(...args) {
+        window.console.timeEnd(...args);
       }
     };
 
@@ -122,8 +128,42 @@
     console.count('Steve');
     console.count('Steve');
     console.count('Steve');
-    // timing
+    // timing 判斷一個指令花多少時間
 
+    // j外i內
+    console.time('test i');
+    let j1;
+    for(let i1 = 1; i1 < 10000000; i1++){
+      j1 = i1;
+    }
+    console.timeEnd('test i');
+    
+    // j內i外
+    console.time('test j');
+    let i2;
+    for(i2 = 1; i2 < 10000000; i2++){
+      let j2 = i2;
+    }
+    console.timeEnd('test j');
+
+    // 都在外面
+    console.time('test1');
+    let i3, j3;
+    for(i3 = 1; i3 < 10000000; i3++){
+      j3 = i3;
+    }
+    console.timeEnd('test1');
+
+    // 都在裡面
+    console.time('test2');
+    for(let i4 = 1; i4 < 10000000; i4++){
+      let j4 = i4;
+    }
+    console.timeEnd('test2');
+
+    //宣告在裡面最快
+
+    // 封裝後整體效能提升
   </script>
 </body>
 

@@ -1,12 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Key Detection</title>
-  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+  <!-- <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script> -->
 </head>
+
 <body>
-<script>
-</script>
+  <script>
+    const secretCode = [65, 66, 67, 68, 69, 70, 71, 72, 73, 74]; // abcdefghij
+    const input = [];
+    window.addEventListener("keyup", function (e) {
+      input.push(e.keyCode);
+      // while(input.length > secretCode.length){
+      //   // 移除第一個元素
+      //   input.shift();
+      // }
+
+      input.splice(0, input.length - secretCode.length);
+      //input 0 input.length-secretCode.length
+      // 1 -11, -9
+      // 2 -11, -8
+      // 負的話不會有反應
+      // 10 -11, 0
+      // 11 -11, 1
+
+      console.log(input, secretCode);
+
+      if (input.join("|") === secretCode.join("|")) {
+        // cornify_add();
+        // console.log(e);
+        console.log("abc");
+      }
+    });
+  </script>
 </body>
+
 </html>

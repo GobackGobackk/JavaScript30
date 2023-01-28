@@ -11,6 +11,15 @@
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+    let players2 = players;
+    players2[0] = "nicole";
+    console.log(players);
+    // 因為pass by reference players 本身也更改
+
+    // 可使用slice、concat、ES6解構 複製陣列
+    players3 = players.slice();
+    players3[3] = "hihi";
+    console.log(players);
 
     // and we want to make a copy of it.
 
